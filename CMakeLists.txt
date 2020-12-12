@@ -11,7 +11,7 @@ daq_add_plugin(ListReverser duneDAQModule	     LINK_LIBRARIES appfwk::appfwk)
 daq_add_plugin(RandomDataListGenerator duneDAQModule SCHEMA LINK_LIBRARIES appfwk::appfwk)
 daq_add_plugin(ReversedListValidator duneDAQModule   LINK_LIBRARIES appfwk::appfwk)
 
-daq_add_plugin( FakeDataConsumerDAQModule duneDAQModule LINK_LIBRARIES appfwk SCHEMA)
-daq_add_plugin( FakeDataProducerDAQModule duneDAQModule LINK_LIBRARIES appfwk SCHEMA)
+daq_add_plugin( FakeDataConsumerDAQModule duneDAQModule LINK_LIBRARIES appfwk::appfwk SCHEMA)
+daq_add_plugin( FakeDataProducerDAQModule duneDAQModule LINK_LIBRARIES appfwk::appfwk SCHEMA)
 
 daq_install()

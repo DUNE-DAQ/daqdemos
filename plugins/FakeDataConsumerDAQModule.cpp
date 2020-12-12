@@ -10,7 +10,7 @@
 #include "FakeDataConsumerDAQModule.hpp"
 
 #include "appfwk/cmd/Nljs.hpp"
-#include "appfwk/fakedataconsumerdaqmodule/Nljs.hpp"
+#include "daqdemos/fakedataconsumerdaqmodule/Nljs.hpp"
 
 #include "TRACE/trace.h"
 #include <ers/ers.h>

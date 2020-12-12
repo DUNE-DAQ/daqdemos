@@ -17,7 +17,7 @@
 #include "appfwk/ThreadHelper.hpp"
 
 // Our command data structures
-#include "appfwk/fakedataconsumerdaqmodule/Structs.hpp"
+#include "daqdemos/fakedataconsumerdaqmodule/Structs.hpp"
 
 #include <ers/Issue.h>
 
