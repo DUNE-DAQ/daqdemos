@@ -18,7 +18,7 @@
 #include "appfwk/ThreadHelper.hpp"
 
 // Our command structures.  
-#include "appfwk/fakedataproducerdaqmodule/Structs.hpp"
+#include "daqdemos/fakedataproducerdaqmodule/Structs.hpp"
 
 #include <future>
 #include <memory>
@@ -26,12 +26,12 @@
 #include <vector>
 
 namespace dunedaq {
-namespace appfwk {
+namespace fdpc {
 /**
  * @brief FakeDataProducerDAQModule creates vectors of ints and sends them
  * downstream
  */
-class FakeDataProducerDAQModule : public DAQModule
+class FakeDataProducerDAQModule : public appfwk::DAQModule
 {
 public:
   /**
@@ -58,14 +58,14 @@ private:
   void do_stop(const data_t& data);
 
   // Threading
-  ThreadHelper thread_;
+  appfwk::ThreadHelper thread_;
   void do_work(std::atomic<bool>& running_flag);
 
   // Configuration
-  std::unique_ptr<DAQSink<std::vector<int>>> outputQueue_;
+  std::unique_ptr<appfwk::DAQSink<std::vector<int>>> outputQueue_;
   std::chrono::milliseconds queueTimeout_;
 
-  fakedataproducerdaqmodule::Conf cfg_;
+  daqdemos::fakedataproducerdaqmodule::Conf cfg_;
 
   // size_t nIntsPerVector_ = 999;
   // int starting_int_ = -999;
@@ -74,7 +74,7 @@ private:
 };
 } // namespace appfwk
 
-ERS_DECLARE_ISSUE_BASE(appfwk,
+ERS_DECLARE_ISSUE_BASE(fdpc,
                        ProducerProgressUpdate,
                        appfwk::GeneralDAQModuleIssue,
                        message,

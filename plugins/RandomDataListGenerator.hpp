@@ -66,7 +66,7 @@ private:
   using sink_t = dunedaq::appfwk::DAQSink<std::vector<int>>;
   std::vector<std::unique_ptr<sink_t>> outputQueues_;
   std::chrono::milliseconds queueTimeout_;
-  randomdatalistgenerator::Conf cfg_;
+  daqdemos::randomdatalistgenerator::Conf cfg_;
 };
 } // namespace listrev
 

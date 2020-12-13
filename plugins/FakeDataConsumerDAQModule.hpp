@@ -27,12 +27,12 @@
 #include <vector>
 
 namespace dunedaq {
-namespace appfwk {
+namespace fdpc {
 /**
  * @brief FakeDataConsumerDAQModule creates vectors of ints and sends them
  * downstream
  */
-class FakeDataConsumerDAQModule : public DAQModule
+class FakeDataConsumerDAQModule : public appfwk::DAQModule
 {
 public:
   /**
@@ -60,19 +60,19 @@ private:
 
   // Threading
   void do_work(std::atomic<bool>& running_flag);
-  ThreadHelper thread_;
+  appfwk::ThreadHelper thread_;
 
   // Configuration (for validation)
-  fakedataconsumerdaqmodule::Conf cfg_;
+  daqdemos::fakedataconsumerdaqmodule::Conf cfg_;
   // size_t nIntsPerVector_ = 999;
   // int starting_int_ = -999;
   // int ending_int_ = -999;
   std::chrono::milliseconds queueTimeout_;
-  std::unique_ptr<DAQSource<std::vector<int>>> inputQueue_;
+  std::unique_ptr<appfwk::DAQSource<std::vector<int>>> inputQueue_;
 };
 
 } // namespace appfwk
-ERS_DECLARE_ISSUE_BASE(appfwk,
+ERS_DECLARE_ISSUE_BASE(fdpc,
                        ConsumerErrorDetected,
                        appfwk::GeneralDAQModuleIssue,
 
@@ -80,7 +80,7 @@ ERS_DECLARE_ISSUE_BASE(appfwk,
                                                    << expected << ", received " << received,
                        ((std::string)name),
                        ((int)counter)((int)position)((int)expected)((int)received))
-ERS_DECLARE_ISSUE_BASE(appfwk,
+ERS_DECLARE_ISSUE_BASE(fdpc,
                        ConsumerProgressUpdate,
                        appfwk::GeneralDAQModuleIssue,
                        message,

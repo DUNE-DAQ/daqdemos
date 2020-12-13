@@ -10,7 +10,7 @@
 #include "FakeDataProducerDAQModule.hpp"
 
 #include "appfwk/cmd/Nljs.hpp"
-#include "appfwk/fakedataproducerdaqmodule/Nljs.hpp"
+#include "daqdemos/fakedataproducerdaqmodule/Nljs.hpp"
 
 
 #include <chrono>
@@ -26,7 +26,7 @@
 #define TRACE_NAME "FakeDataProducer" // NOLINT
 
 namespace dunedaq {
-namespace appfwk {
+namespace fdpc {
 
 FakeDataProducerDAQModule::FakeDataProducerDAQModule(const std::string& name)
   : DAQModule(name)
@@ -42,11 +42,11 @@ FakeDataProducerDAQModule::FakeDataProducerDAQModule(const std::string& name)
 void
 FakeDataProducerDAQModule::init(const nlohmann::json& init_data)
 {
-  auto ini = init_data.get<cmd::ModInit>();
+  auto ini = init_data.get<appfwk::cmd::ModInit>();
   for (const auto& qi : ini.qinfos) {
     if (qi.name == "output") {
       ERS_INFO("FDP: output queue is " << qi.inst);
-      outputQueue_.reset(new DAQSink<std::vector<int>>(qi.inst));
+      outputQueue_.reset(new appfwk::DAQSink<std::vector<int>>(qi.inst));
     }
   }
 }
@@ -58,7 +58,7 @@ FakeDataProducerDAQModule::do_configure(const data_t& data)
 {
   std::cerr << data.dump(4) << std::endl;
 
-  cfg_ = data.get<fakedataproducerdaqmodule::Conf>();
+  cfg_ = data.get<daqdemos::fakedataproducerdaqmodule::Conf>();
 
   queueTimeout_ = std::chrono::milliseconds(cfg_.queue_timeout_ms);
 }
@@ -122,7 +122,7 @@ FakeDataProducerDAQModule::do_work(std::atomic<bool>& running_flag)
     ERS_INFO("FDP \"" << get_name() << "\" push " << counter);
     try {
       outputQueue_->push(std::move(output), queueTimeout_);
-    } catch(const QueueTimeoutExpired& ex) {
+    } catch(const appfwk::QueueTimeoutExpired& ex) {
       ERS_INFO("FDP \"" << get_name() << "\" queue timeout on " << counter);
       ers::warning(ex);
     }
@@ -134,10 +134,10 @@ FakeDataProducerDAQModule::do_work(std::atomic<bool>& running_flag)
   }
 }
 
-} // namespace appfwk
+} // namespace fdpc
 } // namespace dunedaq
 
-DEFINE_DUNE_DAQ_MODULE(dunedaq::appfwk::FakeDataProducerDAQModule)
+DEFINE_DUNE_DAQ_MODULE(dunedaq::fdpc::FakeDataProducerDAQModule)
 
 
 // Local Variables:

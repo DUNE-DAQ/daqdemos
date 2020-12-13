@@ -26,7 +26,8 @@
 #include <thread>
 #include <vector>
 
-namespace dunedaq::appfwk {
+namespace dunedaq {
+namespace fdpc {
 
 FakeDataConsumerDAQModule::FakeDataConsumerDAQModule(const std::string& name)
   : DAQModule(name)
@@ -41,11 +42,11 @@ FakeDataConsumerDAQModule::FakeDataConsumerDAQModule(const std::string& name)
 void
 FakeDataConsumerDAQModule::init(const nlohmann::json& init_data)
 {
-  auto ini = init_data.get<cmd::ModInit>();
+  auto ini = init_data.get<appfwk::cmd::ModInit>();
   for (const auto& qi : ini.qinfos) {
     if (qi.name == "input") {
       ERS_INFO("FDP: input queue is " << qi.inst);
-      inputQueue_.reset(new DAQSource<std::vector<int>>(qi.inst));
+      inputQueue_.reset(new appfwk::DAQSource<std::vector<int>>(qi.inst));
     }
   }
 }
@@ -53,7 +54,7 @@ FakeDataConsumerDAQModule::init(const nlohmann::json& init_data)
 void
 FakeDataConsumerDAQModule::do_configure(const data_t& data)
 {
-  cfg_ = data.get<fakedataconsumerdaqmodule::Conf>();
+  cfg_ = data.get<daqdemos::fakedataconsumerdaqmodule::Conf>();
 
   queueTimeout_ = std::chrono::milliseconds(cfg_.queue_timeout_ms);
 }
@@ -153,9 +154,10 @@ FakeDataConsumerDAQModule::do_work(std::atomic<bool>& running_flag)
   ers::info(ConsumerProgressUpdate(ERS_HERE, get_name(), oss.str()));
 }
 
-} // namespace dunedaq::appfwk
+} // namespace fdpc
+} // namespace dunedaq
 
-DEFINE_DUNE_DAQ_MODULE(dunedaq::appfwk::FakeDataConsumerDAQModule)
+DEFINE_DUNE_DAQ_MODULE(dunedaq::fdpc::FakeDataConsumerDAQModule)
 
 // Local Variables:
 // c-basic-offset: 2
