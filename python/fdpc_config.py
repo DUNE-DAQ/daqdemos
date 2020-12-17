@@ -6,7 +6,7 @@ mootools.import_schema('daqdemos-FakeDataConsumerDAQModule-schema.jsonnet')
 mootools.import_schema('daqdemos-FakeDataProducerDAQModule-schema.jsonnet')
 
 
-import dunedaq.appfwk.cmd as cmd
+import dunedaq.appfwk.cmd as cmd # AddressedCmd, 
 import dunedaq.daqdemos.fakedataconsumerdaqmodule as fdc
 import dunedaq.daqdemos.fakedataproducerdaqmodule as fdp
 
@@ -29,22 +29,24 @@ initcmd = cmd.Command(
 
 confcmd = cmd.Command(
     id=cmd.CmdId("conf"),
-    data=cmd.AddressedCmds([
-        cmd.AddressedCmd(match="fdp", data=fdp.Conf(
-            ending_int= 14,
-            nIntsPerVector= 10,
-            queue_timeout_ms= 100,
-            starting_int= -4,
-            wait_between_sends_ms= 1000
+    data=cmd.CmdObj(
+        modules=cmd.AddressedCmds([
+            cmd.AddressedCmd(match="fdp", data=fdp.Conf(
+                ending_int= 14,
+                nIntsPerVector= 10,
+                queue_timeout_ms= 100,
+                starting_int= -4,
+                wait_between_sends_ms= 1000
 
-        )),
-        cmd.AddressedCmd(match="fdc", data=fdc.Conf(
-            ending_int = 14,
-            nIntsPerVector = 10,
-            queue_timeout_ms = 100,
-            starting_int = -4
-        ))
-    ])
+            )),
+            cmd.AddressedCmd(match="fdc", data=fdc.Conf(
+                ending_int = 14,
+                nIntsPerVector = 10,
+                queue_timeout_ms = 100,
+                starting_int = -4
+            ))
+        ])
+    )
 )
 
 startcmd = cmd.Command(
@@ -55,8 +57,8 @@ stopcmd = cmd.Command(
     id=cmd.CmdId('stop')
 )
 
+# Create a list of commands
+cmd_seq = [initcmd, confcmd, startcmd, stopcmd]
 
-
-
-
-print(json.dumps([c.pod() for c in (initcmd, confcmd, startcmd, stopcmd)], indent=4, sort_keys=True))
+# Print them as json (to be improved/moved out)
+print(json.dumps([c.pod() for c in cmd_seq], indent=4, sort_keys=True))
