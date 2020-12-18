@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import mootools
 import json
 
@@ -16,10 +17,21 @@ queues = cmd.QueueSpecs([
 ])
 
 modules = cmd.ModSpecs([
-  cmd.ModSpec(inst="source", plugin="FakeDataProducerDAQModule",
-    data=cmd.QueueInfo(inst="hose", name="output", dir="output")),
-  cmd.ModSpec(inst="sink", plugin="FakeDataConsumerDAQModule",
-    data=cmd.QueueInfo(inst="host", name="input", dir="input"))])
+    cmd.ModSpec(inst="fdp", plugin="FakeDataProducerDAQModule",
+        data=cmd.ModInit(
+            qinfos=cmd.QueueInfos([
+                cmd.QueueInfo(inst="hose", name="output", dir="output")
+            ])
+        ),
+    ),
+    cmd.ModSpec(inst="fdc", plugin="FakeDataConsumerDAQModule",
+        data=cmd.ModInit(
+            qinfos=cmd.QueueInfos([
+                cmd.QueueInfo(inst="hose", name="input", dir="input")
+            ])
+        )
+    )
+])
 
 # Init command
 initcmd = cmd.Command(
@@ -50,15 +62,25 @@ confcmd = cmd.Command(
 )
 
 startcmd = cmd.Command(
-    id=cmd.CmdId('start')
+    id=cmd.CmdId('start'),
+    data=cmd.CmdObj(
+        modules=cmd.AddressedCmds([])
+    )
 )
 
 stopcmd = cmd.Command(
-    id=cmd.CmdId('stop')
+    id=cmd.CmdId('stop'),
+    data=cmd.CmdObj(
+        modules=cmd.AddressedCmds([])
+    )
 )
 
 # Create a list of commands
 cmd_seq = [initcmd, confcmd, startcmd, stopcmd]
 
 # Print them as json (to be improved/moved out)
-print(json.dumps([c.pod() for c in cmd_seq], indent=4, sort_keys=True))
+jstr = json.dumps([c.pod() for c in cmd_seq], indent=4, sort_keys=True)
+print(jstr)
+with open('fdpc_config.json', 'w') as f:
+    f.write(jstr)
+
