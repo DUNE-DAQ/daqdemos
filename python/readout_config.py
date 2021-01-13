@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-import mootools
+import moo.otypes
+
+from dunedaq.env import get_moo_model_path
+moo.otypes.load_types('appfwk-cmd-schema.jsonnet', get_moo_model_path())
+# moo.otypes.load_types('readout-DataLinkHandler-schema.jsonnet', get_moo_model_path())git 
+# moo.otypes.load_types('readout-FelixCardReader-schema.jsonnet', get_moo_model_path())git 
+
 import json
-
-mootools.import_schema('appfwk-cmd-schema.jsonnet')
-# mootools.import_schema('readout-DataLinkHandler-schema.jsonnet')
-# mootools.import_schema('readout-FelixCardReader-schema.jsonnet')
-
 
 import dunedaq.appfwk.cmd as cmd # AddressedCmd, 
 # import dunedaq.readout.datalinkhandler as ldh
