@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-import mootools
+
+import moo.otypes
+
+from dunedaq.env import get_moo_model_path
+moo.otypes.load_types('appfwk-cmd-schema.jsonnet', get_moo_model_path())
+moo.otypes.load_types('daqdemos-FakeDataConsumerDAQModule-schema.jsonnet', get_moo_model_path())
+moo.otypes.load_types('daqdemos-FakeDataProducerDAQModule-schema.jsonnet', get_moo_model_path())
+
 import json
-
-mootools.import_schema('appfwk-cmd-schema.jsonnet')
-mootools.import_schema('daqdemos-FakeDataConsumerDAQModule-schema.jsonnet')
-mootools.import_schema('daqdemos-FakeDataProducerDAQModule-schema.jsonnet')
-
 
 import dunedaq.appfwk.cmd as cmd # AddressedCmd, 
 import dunedaq.daqdemos.fakedataconsumerdaqmodule as fdc
